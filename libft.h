@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 12:52:25 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/04 22:24:07 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/10/05 11:43:48 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 
 # define INT_MAX 2147483647
+# define INT_MIN -2147483648
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -46,5 +47,13 @@ int		ft_atoi(const char *str);
 char	*ft_strdup(const char *s);
 void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_calloc(size_t count, size_t size);
+
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
+void	ft_striteri(char *s, void (*f)(unsigned int, char *));
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+char	*ft_itoa(int n);
 
 #endif
