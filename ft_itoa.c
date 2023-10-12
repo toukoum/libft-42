@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 10:54:53 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/05 12:03:36 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/10/09 13:07:45 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,26 @@ char	*ft_itoa(int n)
 	char	*result;
 	size_t	len;
 	int		i;
+	long	long_n;
 
-	if (n == 0)
+	long_n = (long)n;
+	if (long_n == 0)
 		return (ft_strdup("0"));
-	if (n == INT_MIN)
-		return (ft_strdup("-2147483648"));
 	i = 0;
-	len = ft_nlen(n);
+	len = ft_nlen(long_n);
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
 		return (NULL);
 	result[len] = '\0';
-	if (n < 0)
+	if (long_n < 0)
 	{
 		result[len - 1] = '-';
-		n *= -1;
+		long_n *= -1;
 	}
-	while (n)
+	while (long_n)
 	{
-		result[i++] = n % 10 + '0';
-		n /= 10;
+		result[i++] = long_n % 10 + '0';
+		long_n /= 10;
 	}
 	return (ft_swap(result, len));
 }

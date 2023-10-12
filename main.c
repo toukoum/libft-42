@@ -1,42 +1,63 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
+#include "libft.h"
 
-// Tes fonctions
-int	ft_isalpha(int c);
-int	ft_isdigit(int c);
-int	ft_isalnum(int c);
-int	ft_isascii(int c);
-int	ft_isprint(int c);
-size_t	ft_strlen(const char *s);
-int	ft_toupper(int c);
-int	ft_tolower(int c);
-
-int main()
+void	ft_str_to_upper(void *name)
 {
-    // Test pour ft_isalpha
-    printf("ft_isalpha('a') = %d, isalpha('a') = %d\n", ft_isalpha('a'), isalpha('a'));
+	char	*name_char;
 
-    // Test pour ft_isdigit
-    printf("ft_isdigit('1') = %d, isdigit('1') = %d\n", ft_isdigit('1'), isdigit('1'));
+	name_char = name;
+	while (*name_char)
+	{
+		*name_char = ft_toupper(*name_char);
+		name_char++;
+	}
+}
 
-    // Test pour ft_isalnum
-    printf("ft_isalnum('a') = %d, isalnum('a') = %d\n", ft_isalnum('a'), isalnum('a'));
+void	ft_display(t_list *poke_1)
+{
+	printf("========== Liste of POKE ==========\n");
+	while (poke_1)
+	{
+		printf("Nom du poke: %s\n", (char *)(poke_1->content));
+		poke_1 = poke_1->next;
+	}
+	printf("===============================\n\n");
+}
 
-    // Test pour ft_isascii
-    printf("ft_isascii(127) = %d, isascii(127) = %d\n", ft_isascii(127), isascii(127));
+void	del_func(void *elem)
+{
+	free(elem);
+}
 
-    // Test pour ft_isprint
-    printf("ft_isprint(' ') = %d, isprint(' ') = %d\n", ft_isprint(' '), isprint(' '));
 
-    // Test pour ft_strlen
-    printf("ft_strlen(\"Hello\") = %zu, strlen(\"Hello\") = %zu\n", ft_strlen("Hello"), strlen("Hello"));
+int	main(void)
+{
+	t_list	*poke_1;
+	t_list	*poke_2;
+	t_list	*poke_3;
+	char	*carapuce;
+	char	*drakofeu;
+	char	*bulbizar;
 
-    // Test pour ft_toupper
-    printf("ft_toupper('a') = %c, toupper('a') = %c\n", ft_toupper('a'), toupper('a'));
+	carapuce = strdup("carapuce");
+	drakofeu = strdup("drakofeu");
+	bulbizar = strdup("bulbizar");
+	poke_1 = ft_lstnew(carapuce);
+	poke_2 = ft_lstnew(drakofeu);
+	poke_3 = ft_lstnew(bulbizar);
 
-    // Test pour ft_tolower
-    printf("ft_tolower('A') = %c, tolower('A') = %c\n", ft_tolower('A'), tolower('A'));
 
-    return 0;
+	ft_lstadd_front(&poke_2, poke_1);
+	ft_lstadd_back(&poke_1, poke_3);
+	ft_display(poke_1);
+	printf("Nombre de poke: %d\n", ft_lstsize(poke_1));
+	printf("Valeur de dernier poke: %s\n",
+		(char *)(ft_lstlast(poke_1)->content));
+	ft_lstiter(poke_1, &ft_str_to_upper);
+	ft_display(poke_1);
+	ft_display(poke_1);
+
+
+
+	
+	return (0);
 }
