@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:44:46 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/04 11:20:04 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/06 22:08:48 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	size_t			i;
 	unsigned char	*str;
 
-	if (!s)
-		return (NULL);
 	str = (unsigned char *)s;
 	i = 0;
 	while (i < n)

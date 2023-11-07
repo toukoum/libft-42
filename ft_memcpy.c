@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 11:29:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/04 21:47:13 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/06 22:07:39 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	unsigned char	*tempdst;
 
 	i = 0;
+	if (!dest && !src)
+		return (NULL);
 	tempsrc = (unsigned char *)src;
 	tempdst = (unsigned char *)dest;
 	while (i++ < n)

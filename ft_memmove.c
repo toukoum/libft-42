@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 20:49:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/04 22:24:28 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/06 22:08:15 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char	*tempsrc;
 	unsigned char	*tempdst;
 
-	if (!dest || !src)
+	if (!dest && !src)
 		return (NULL);
 	tempsrc = (unsigned char *)src;
 	tempdst = (unsigned char *)dest;

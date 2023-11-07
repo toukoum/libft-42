@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:27 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/10/03 11:42:10 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/07 10:23:29 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	char	*chaine;
 
 	chaine = (char *)haystack;
-	if (!needle || *needle == '\0')
+	if (!needle[0])
 		return (chaine);
 	i = 0;
 	while (chaine[i] && i < len)
