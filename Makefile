@@ -48,5 +48,4 @@ t: $(NAME) bonus
 	@$(CC) $(CFLAGS) main.c -L. -lft -o test
 	@./test
 
-
 .PHONY: all clean fclean re bonus t
