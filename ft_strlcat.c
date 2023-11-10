@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 11:54:17 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/11/07 10:17:03 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/10 08:48:52 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ size_t	ft_strlcat(char *dst, const char *src, size_t n)
 	size_t	len_dst;
 	size_t	len_src;
 
+	if (!dst && n == 0)
+		return (0);
 	len_dst = ft_strlen(dst);
 	len_src = ft_strlen(src);
 	i = len_dst;

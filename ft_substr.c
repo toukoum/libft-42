@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:27:25 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/11/07 10:48:08 by rgiraud          ###   ########.fr       */
+/*   Updated: 2023/11/10 08:30:17 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	len_result;
 	char	*result;
 
-	if (!s || s[0] == '\0')
+	if (!s)
 		return (NULL);
 	len_s = ft_strlen(s);
 	if (start >= len_s)
