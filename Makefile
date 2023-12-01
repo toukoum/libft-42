@@ -1,15 +1,15 @@
 NAME = libft.a
 
-DEPS = libft.h
+DEPS = ./libft_mandatory/includes/libft.h ./gnl/includes/get_next_line_bonus.h ./ft_printf/includes/ft_printf.h
 
-SRC=$(filter-out $(SRC_BONUS), $(wildcard ft_*.c))
+PRINTF_SRCS = $(wildcard ./ft_printf/srcs/*.c)
+GNL_SRCS = $(wildcard ./gnl/srcs/*.c)
+LIBFT_SRCS = $(wildcard ./libft_mandatory/srcs/*.c)
+
+SRC = $(LIBFT_SRCS) $(PRINTF_SRCS) $(GNL_SRCS)
 OBJ = $(SRC:.c=.o)
 
-SRC_BONUS=$(wildcard ft_lst*.c)
-BONUS_OBJ = $(SRC_BONUS:.c=.o)
-
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror
 
 RED=\033[0;31m
@@ -27,16 +27,9 @@ $(NAME): $(OBJ)
 	@echo "$(GREEN)Compiling $<...$(NC)"
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(BONUS_OBJ)
-	@echo "$(ROSE)Adding bonus functions to $(NAME)...$(NC)"
-	ar rcs $(NAME) $(BONUS_OBJ)
-
-$(BONUS_OBJ): $(SRC_BONUS) $(DEPS)
-	$(CC) $(CFLAGS) -c $(SRC_BONUS)
-
 clean:
 	@echo "$(RED)Cleaning object files...$(NC)"
-	rm -f $(OBJ) $(BONUS_OBJ)
+	rm -f $(OBJ)
 
 fclean: clean
 	@echo "$(RED)Cleaning library $(NAME)...$(NC)"
@@ -44,8 +37,4 @@ fclean: clean
 
 re: fclean all
 
-t: $(NAME) bonus
-	@$(CC) $(CFLAGS) main.c -L. -lft -o test
-	@./test
-
-.PHONY: all clean fclean re bonus t
+.PHONY: all clean fclean re
