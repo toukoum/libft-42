@@ -5,95 +5,123 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/10 12:37:16 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/12/01 13:15:30 by rgiraud          ###   ########.fr       */
+/*   Created: 2024/04/23 13:51:20 by rgiraud           #+#    #+#             */
+/*   Updated: 2024/04/23 13:54:45 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/get_next_line_bonus.h"
 
-int	read_from_fd(int fd, char *buffer, char **stash)
+/* Returns the result of strjoin of str + buffer & frees str */
+char	*ft_joinbuffer(char *str, char buffer[BUFFER_SIZE + 1])
 {
-	size_t	bytes_read;
+	char	*line;
 
+	if (buffer == NULL)
+		return (NULL);
+	else if (str == NULL)
+		return (ft_strdup(buffer));
+	line = ft_strjoin(str, buffer);
+	free(str);
+	return (line);
+}
+
+/* 	Read from a file BUFFER_SIZE bytes at a time.
+	If EOF or \n is found, return string of all read content.
+	If no bytes were read and there's nothing in BUFFER, return NULL */
+char	*read_line(char buffer[BUFFER_SIZE + 1], int fd)
+{
+	char	*line;
+	int		bytes_read;
+
+	if (ft_strchr(buffer, '\n'))
+		return (ft_strdup(buffer));
+	line = ft_strdup(buffer);
+	if (line == NULL)
+		return (NULL);
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	if (bytes_read > 0)
+	if (!bytes_read && !buffer[0])
+		return (free(line), NULL);
+	while (bytes_read > 0)
 	{
-		if (stash[fd])
-			stash[fd] = ft_strjoin_gnl(stash[fd], buffer, bytes_read);
-		else
-			stash[fd] = ft_strdup_gnl(buffer, NULL, bytes_read);
-		if (!stash[fd])
-			return (-1);
-		return (bytes_read);
-	}
-	if (bytes_read == 0)
-		return (0);
-	else
-		return (-1);
-}
-
-int	ft_realloc(char **stash, int fd, char *new_part)
-{
-	char	*temp;
-
-	if (*(new_part + 1) != '\0')
-	{
-		temp = ft_strdup_gnl(new_part + 1, NULL, -1);
-		if (!temp)
-			return (0);
-	}
-	else
-		temp = NULL;
-	free(stash[fd]);
-	stash[fd] = temp;
-	return (1);
-}
-
-char	*construct_line(char *buffer, int fd, char **stash, int bytes_read)
-{
-	char	*new_part;
-	char	*result;
-
-	while (bytes_read > 0 || find_newline(stash[fd]))
-	{
-		new_part = find_newline(stash[fd]);
-		if (new_part)
-		{
-			result = ft_strdup_gnl(stash[fd], new_part, -1);
-			if (!result || !ft_realloc(stash, fd, new_part))
-				return (NULL);
-			return (result);
-		}
-		bytes_read = read_from_fd(fd, buffer, stash);
-	}
-	if (bytes_read == 0)
-	{
-		if (!stash[fd])
+		line = ft_joinbuffer(line, buffer);
+		if (line == NULL)
 			return (NULL);
-		result = ft_strdup_gnl(stash[fd], NULL, -1);
-		free(stash[fd]);
-		stash[fd] = NULL;
-		return (result);
+		if (ft_strchr(buffer, '\n'))
+			return (line);
+		ft_bzero(buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
-	return (NULL);
+	return (line);
 }
 
+/*	Return a copied allocated string of READ_RESULT up to and including \n
+	If no \n is found, simply returns a duplicated READ_RESULT */
+char	*get_line(char *read_result)
+{
+	char	*line;
+	int		line_size;
+
+	if (read_result == NULL)
+		return (NULL);
+	line_size = 0;
+	while (read_result[line_size] && read_result[line_size] != '\n')
+		line_size++;
+	if (read_result[line_size] == '\0')
+		return (ft_strdup(read_result));
+	line_size++;
+	line = malloc(sizeof(char) * (line_size + 1));
+	if (line == NULL)
+		return (NULL);
+	ft_strlcpy(line, read_result, line_size + 1);
+	return (line);
+}
+
+/*	Remove last line content of BUFFER and get start of next line in place
+	If there's nothing after new line, sets all of buffer to 0 */
+void	reset_buffer(char buffer[BUFFER_SIZE + 1])
+{
+	int	len;
+	int	i;
+
+	len = 0;
+	while (buffer[len] && buffer[len] != '\n')
+		len++;
+	if (buffer[len] == '\0')
+		return (ft_bzero(buffer, BUFFER_SIZE));
+	len++;
+	i = 0;
+	while (buffer[len + i])
+	{
+		buffer[i] = buffer[len + i];
+		i++;
+	}
+	while (i <= BUFFER_SIZE)
+	{
+		buffer[i] = '\0';
+		i++;
+	}
+}
+
+/* 	Returns the next line of file representated by FD.
+	Line is allocated in memory and should be free'd by caller
+	Returns NULL if EOF or on error. */
 char	*get_next_line(int fd)
 {
-	char			*buffer;
-	char			*result;
-	static char		*stash[FOPEN_MAX];
-	int				bytes_read;
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*read_result;
+	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FOPEN_MAX || read(fd, 0, 0) < 0)
+	read_result = NULL;
+	if (fd == -1 || BUFFER_SIZE < 1 || read(fd, read_result, 0) == -1)
 		return (NULL);
-	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
-	if (!buffer)
+	read_result = read_line(buffer, fd);
+	if (read_result == NULL)
 		return (NULL);
-	buffer[BUFFER_SIZE] = '\0';
-	bytes_read = read_from_fd(fd, buffer, stash);
-	result = construct_line(buffer, fd, stash, bytes_read);
-	free(buffer);
-	return (result);
+	line = get_line(read_result);
+	free(read_result);
+	if (line == NULL)
+		return (NULL);
+	reset_buffer(buffer);
+	return (line);
 }
