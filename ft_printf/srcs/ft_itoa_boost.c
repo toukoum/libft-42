@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:33:52 by rgiraud           #+#    #+#             */
-/*   Updated: 2023/12/01 12:54:32 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/04/24 21:56:45 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ size_t	ft_nlen2(unsigned long long n)
 	size_t	len;
 
 	len = 0;
-	if (n < 0)
-		len++;
 	while (n)
 	{
 		n /= 10;
@@ -58,11 +56,6 @@ char	*ft_itoa_boost(unsigned long long n)
 	if (!result)
 		return (NULL);
 	result[len] = '\0';
-	if (n < 0)
-	{
-		result[len - 1] = '-';
-		n *= -1;
-	}
 	while (n)
 	{
 		result[i++] = n % 10 + '0';
